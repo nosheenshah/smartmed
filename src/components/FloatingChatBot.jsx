@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { getGeminiResponse } from '../utils/gemini';
-
+import { getAiMlResponse } from '../utils/aiMlApi';
 function FloatingChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -26,7 +25,7 @@ function FloatingChatBot() {
 جواب صرف 2-3 جملوں میں دیں، سادہ اور دوستانہ انداز میں۔
     `;
 
-    const botReply = await getGeminiResponse(prompt);
+    const botReply = await getAiMlResponse(prompt);
     setMessages(prev => [...prev, { role: 'bot', text: botReply }]);
     setLoading(false);
   };
