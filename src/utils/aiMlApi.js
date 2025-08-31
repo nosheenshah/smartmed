@@ -14,7 +14,18 @@ export async function getAiMlResponse(prompt) {
     }
 
     const data = await response.json();
-    return data.choices[0].message.content;
+    console.log("AI Raw Response:", data); // Debugging
+
+    // ✅ Safe parsing
+    if (data?.choices?.length > 0 && data.choices[0]?.message?.content) {
+      return data.choices[0].message.content;
+    }
+
+    if (data?.error) {
+      return `❌ API Error: ${data.error.message || "Unknown error"}`;
+    }
+
+    return "⚠️ کوئی جواب نہیں ملا۔ دوبارہ کوشش کریں۔";
   } catch (error) {
     console.error('AI API Error:', error);
     return 'میں ابھی جواب نہیں دے سکتا۔ براہ کرم دوبارہ کوشش کریں۔';
