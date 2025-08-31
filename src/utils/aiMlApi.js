@@ -1,7 +1,7 @@
 // src/utils/aiMlApi.js
 export async function getAiMlResponse(prompt) {
   try {
-    const response = await fetch('http://localhost:5678/webhook/chat', {
+    const response = await fetch('http://localhost:5678/webhook-test/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
