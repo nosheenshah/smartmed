@@ -1,5 +1,7 @@
 // src/utils/aiMlApi.js
 export async function getAiMlResponse(prompt) {
+  console.log("Sending prompt to n8n:", prompt);
+
   try {
     const response = await fetch('http://localhost:5678/webhook-test/chat', {
       method: 'POST',
@@ -9,23 +11,17 @@ export async function getAiMlResponse(prompt) {
       body: JSON.stringify({ prompt })
     });
 
+    console.log("Response status:", response.status);
+
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
+      throw new Error(`HTTP ${response.status}`);
     }
 
-    const data = await response.json();
-    console.log("AI Raw Response:", data); // Debugging
+    // ✅ JSON نہیں، بلکہ ٹیکسٹ حاصل کریں
+    const reply = await response.text();
+    console.log("AI Reply:", reply);
 
-    // ✅ Safe parsing
-    if (data?.choices?.length > 0 && data.choices[0]?.message?.content) {
-      return data.choices[0].message.content;
-    }
-
-    if (data?.error) {
-      return `❌ API Error: ${data.error.message || "Unknown error"}`;
-    }
-
-    return "⚠️ کوئی جواب نہیں ملا۔ دوبارہ کوشش کریں۔";
+    return reply;
   } catch (error) {
     console.error('AI API Error:', error);
     return 'میں ابھی جواب نہیں دے سکتا۔ براہ کرم دوبارہ کوشش کریں۔';
